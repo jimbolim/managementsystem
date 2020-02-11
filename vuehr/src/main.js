@@ -15,6 +15,9 @@ import {isNotNullORBlank} from './utils/utils'
 import './utils/filter_utils'
 import 'font-awesome/css/font-awesome.min.css'
 
+ElementUI.Dialog.props.closeOnClickModal.default = false;
+ElementUI.Dialog.props.showClose = false;
+ElementUI.Dialog.props.closeOnPressEscape = false;
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 

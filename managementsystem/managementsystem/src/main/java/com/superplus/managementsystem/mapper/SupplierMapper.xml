@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.superplus.managementsystem.mapper.SupplierMapper" >
+  <resultMap id="BaseResultMap" type="com.superplus.managementsystem.bean.Supplier" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="suppliercode" property="suppliercode" jdbcType="DOUBLE" />
+    <result column="shopname" property="shopname" jdbcType="VARCHAR" />
+    <result column="lastbrandname" property="lastbrandname" jdbcType="VARCHAR" />
+    <result column="brandname" property="brandname" jdbcType="VARCHAR" />
+    <result column="shopurl" property="shopurl" jdbcType="VARCHAR" />
+    <result column="producttype" property="producttype" jdbcType="VARCHAR" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="checktype" property="checktype" jdbcType="VARCHAR" />
+    <result column="purchaseprice" property="purchaseprice" jdbcType="DOUBLE" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, suppliercode, shopname, lastbrandname, brandname, shopurl, producttype, comment, 
+    updatetime, checktype, purchaseprice, type
+  </sql>
+  <select id="getSupplierByPage" resultMap="BaseResultMap">
+    select
+    s.*
+    from
+    supplier s
+    where suppliercode like concat('%',#{keywords},'%')
+    <if test="start!=null and size!=null">
+      order by s.id limit #{start},#{size}
+    </if>
+  </select>
+  <select id="getCountByKeywords" resultType="Long">
+    select
+        count(*)
+    from supplier
+    where suppliercode like concat('%',#{keywords},'%')
+  </select>
+
+  <delete id="deleteSupById">
+    delete from supplier where id = #{id}
+  </delete>
+
+  <select id="getMaxWorkID" resultType="Long">
+        SELECT id from supplier where id=(select max(id) from supplier)
+    </select>
+
+  <insert id="addSup">
+        insert into supplier (id, suppliercode, shopname,
+          lastbrandname, brandname, shopurl,
+          producttype, comment, updatetime,
+          checktype, purchaseprice, type
+          )
+        values (#{id,jdbcType=INTEGER}, #{suppliercode,jdbcType=DOUBLE}, #{shopname,jdbcType=VARCHAR},
+          #{lastbrandname,jdbcType=VARCHAR}, #{brandname,jdbcType=VARCHAR}, #{shopurl,jdbcType=VARCHAR},
+          #{producttype,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP},
+          #{checktype,jdbcType=VARCHAR}, #{purchaseprice,jdbcType=DOUBLE}, #{type,jdbcType=VARCHAR}
+          )
+  </insert>
+
+  <update id="updateSup" parameterType="map">
+        update supplier
+        <set >
+          <if test="sup.id != null" >
+            id = #{sup.id,jdbcType=INTEGER},
+          </if>
+          <if test="sup.suppliercode != null" >
+            suppliercode = #{sup.suppliercode,jdbcType=DOUBLE},
+          </if>
+          <if test="sup.shopname != null" >
+            shopname = #{sup.shopname,jdbcType=VARCHAR},
+          </if>
+          <if test="sup.lastbrandname != null" >
+            lastbrandname = #{sup.lastbrandname,jdbcType=VARCHAR},
+          </if>
+          <if test="sup.brandname != null" >
+            brandname = #{sup.brandname,jdbcType=VARCHAR},
+          </if>
+          <if test="sup.shopurl != null" >
+            shopurl = #{sup.shopurl,jdbcType=VARCHAR},
+          </if>
+          <if test="sup.producttype != null" >
+            producttype = #{sup.producttype,jdbcType=VARCHAR},
+          </if>
+          <if test="sup.comment != null" >
+            comment = #{sup.comment,jdbcType=VARCHAR},
+          </if>
+          <if test="sup.updatetime != null" >
+            updatetime = #{sup.updatetime,jdbcType=TIMESTAMP},
+          </if>
+          <if test="sup.checktype != null" >
+            checktype = #{sup.checktype,jdbcType=VARCHAR},
+          </if>
+          <if test="sup.purchaseprice != null" >
+            purchaseprice = #{sup.purchaseprice,jdbcType=DOUBLE},
+          </if>
+          <if test="sup.type != null" >
+            type = #{sup.type,jdbcType=VARCHAR},
+          </if>
+        </set>
+        where id = #{sup.id,jdbcType=BIGINT}
+  </update>
+<!--  -->
+<!--  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.superplus.managementsystem.bean.SupplierExample" >-->
+<!--    select-->
+<!--    <if test="distinct" >-->
+<!--      distinct-->
+<!--    </if>-->
+<!--    <include refid="Base_Column_List" />-->
+<!--    from supplier-->
+<!--    <if test="_parameter != null" >-->
+<!--      <include refid="Example_Where_Clause" />-->
+<!--    </if>-->
+<!--    <if test="orderByClause != null" >-->
+<!--      order by ${orderByClause}-->
+<!--    </if>-->
+<!--  </select>-->
+<!--  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >-->
+<!--    select -->
+<!--    <include refid="Base_Column_List" />-->
+<!--    from supplier-->
+<!--    where id = #{id,jdbcType=INTEGER}-->
+<!--  </select>-->
+<!--  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >-->
+<!--    delete from supplier-->
+<!--    where id = #{id,jdbcType=INTEGER}-->
+<!--  </delete>-->
+<!--  <delete id="deleteByExample" parameterType="com.superplus.managementsystem.bean.SupplierExample" >-->
+<!--    delete from supplier-->
+<!--    <if test="_parameter != null" >-->
+<!--      <include refid="Example_Where_Clause" />-->
+<!--    </if>-->
+<!--  </delete>-->
+<!--  <insert id="insert" parameterType="com.superplus.managementsystem.bean.Supplier" >-->
+<!--    insert into supplier (id, suppliercode, shopname, -->
+<!--      lastbrandname, brandname, shopurl, -->
+<!--      producttype, comment, updatetime, -->
+<!--      checktype, purchaseprice, type-->
+<!--      )-->
+<!--    values (#{id,jdbcType=INTEGER}, #{suppliercode,jdbcType=DOUBLE}, #{shopname,jdbcType=VARCHAR}, -->
+<!--      #{lastbrandname,jdbcType=VARCHAR}, #{brandname,jdbcType=VARCHAR}, #{shopurl,jdbcType=VARCHAR}, -->
+<!--      #{producttype,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, -->
+<!--      #{checktype,jdbcType=VARCHAR}, #{purchaseprice,jdbcType=DOUBLE}, #{type,jdbcType=VARCHAR}-->
+<!--      )-->
+<!--  </insert>-->
+<!--  <insert id="insertSelective" parameterType="com.superplus.managementsystem.bean.Supplier" >-->
+<!--    insert into supplier-->
+<!--    <trim prefix="(" suffix=")" suffixOverrides="," >-->
+<!--      <if test="id != null" >-->
+<!--        id,-->
+<!--      </if>-->
+<!--      <if test="suppliercode != null" >-->
+<!--        suppliercode,-->
+<!--      </if>-->
+<!--      <if test="shopname != null" >-->
+<!--        shopname,-->
+<!--      </if>-->
+<!--      <if test="lastbrandname != null" >-->
+<!--        lastbrandname,-->
+<!--      </if>-->
+<!--      <if test="brandname != null" >-->
+<!--        brandname,-->
+<!--      </if>-->
+<!--      <if test="shopurl != null" >-->
+<!--        shopurl,-->
+<!--      </if>-->
+<!--      <if test="producttype != null" >-->
+<!--        producttype,-->
+<!--      </if>-->
+<!--      <if test="comment != null" >-->
+<!--        comment,-->
+<!--      </if>-->
+<!--      <if test="updatetime != null" >-->
+<!--        updatetime,-->
+<!--      </if>-->
+<!--      <if test="checktype != null" >-->
+<!--        checktype,-->
+<!--      </if>-->
+<!--      <if test="purchaseprice != null" >-->
+<!--        purchaseprice,-->
+<!--      </if>-->
+<!--      <if test="type != null" >-->
+<!--        type,-->
+<!--      </if>-->
+<!--    </trim>-->
+<!--    <trim prefix="values (" suffix=")" suffixOverrides="," >-->
+<!--      <if test="id != null" >-->
+<!--        #{id,jdbcType=INTEGER},-->
+<!--      </if>-->
+<!--      <if test="suppliercode != null" >-->
+<!--        #{suppliercode,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="shopname != null" >-->
+<!--        #{shopname,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="lastbrandname != null" >-->
+<!--        #{lastbrandname,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="brandname != null" >-->
+<!--        #{brandname,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="shopurl != null" >-->
+<!--        #{shopurl,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="producttype != null" >-->
+<!--        #{producttype,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="comment != null" >-->
+<!--        #{comment,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="updatetime != null" >-->
+<!--        #{updatetime,jdbcType=TIMESTAMP},-->
+<!--      </if>-->
+<!--      <if test="checktype != null" >-->
+<!--        #{checktype,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="purchaseprice != null" >-->
+<!--        #{purchaseprice,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="type != null" >-->
+<!--        #{type,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--    </trim>-->
+<!--  </insert>-->
+<!--  <select id="countByExample" parameterType="com.superplus.managementsystem.bean.SupplierExample" resultType="java.lang.Integer" >-->
+<!--    select count(*) from supplier-->
+<!--    <if test="_parameter != null" >-->
+<!--      <include refid="Example_Where_Clause" />-->
+<!--    </if>-->
+<!--  </select>-->
+<!--  <update id="updateByExampleSelective" parameterType="map" >-->
+<!--    update supplier-->
+<!--    <set >-->
+<!--      <if test="record.id != null" >-->
+<!--        id = #{record.id,jdbcType=INTEGER},-->
+<!--      </if>-->
+<!--      <if test="record.suppliercode != null" >-->
+<!--        suppliercode = #{record.suppliercode,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="record.shopname != null" >-->
+<!--        shopname = #{record.shopname,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="record.lastbrandname != null" >-->
+<!--        lastbrandname = #{record.lastbrandname,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="record.brandname != null" >-->
+<!--        brandname = #{record.brandname,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="record.shopurl != null" >-->
+<!--        shopurl = #{record.shopurl,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="record.producttype != null" >-->
+<!--        producttype = #{record.producttype,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="record.comment != null" >-->
+<!--        comment = #{record.comment,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="record.updatetime != null" >-->
+<!--        updatetime = #{record.updatetime,jdbcType=TIMESTAMP},-->
+<!--      </if>-->
+<!--      <if test="record.checktype != null" >-->
+<!--        checktype = #{record.checktype,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="record.purchaseprice != null" >-->
+<!--        purchaseprice = #{record.purchaseprice,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="record.type != null" >-->
+<!--        type = #{record.type,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--    </set>-->
+<!--    <if test="_parameter != null" >-->
+<!--      <include refid="Update_By_Example_Where_Clause" />-->
+<!--    </if>-->
+<!--  </update>-->
+<!--  <update id="updateByExample" parameterType="map" >-->
+<!--    update supplier-->
+<!--    set id = #{record.id,jdbcType=INTEGER},-->
+<!--      suppliercode = #{record.suppliercode,jdbcType=DOUBLE},-->
+<!--      shopname = #{record.shopname,jdbcType=VARCHAR},-->
+<!--      lastbrandname = #{record.lastbrandname,jdbcType=VARCHAR},-->
+<!--      brandname = #{record.brandname,jdbcType=VARCHAR},-->
+<!--      shopurl = #{record.shopurl,jdbcType=VARCHAR},-->
+<!--      producttype = #{record.producttype,jdbcType=VARCHAR},-->
+<!--      comment = #{record.comment,jdbcType=VARCHAR},-->
+<!--      updatetime = #{record.updatetime,jdbcType=TIMESTAMP},-->
+<!--      checktype = #{record.checktype,jdbcType=VARCHAR},-->
+<!--      purchaseprice = #{record.purchaseprice,jdbcType=DOUBLE},-->
+<!--      type = #{record.type,jdbcType=VARCHAR}-->
+<!--    <if test="_parameter != null" >-->
+<!--      <include refid="Update_By_Example_Where_Clause" />-->
+<!--    </if>-->
+<!--  </update>-->
+<!--  <update id="updateByPrimaryKeySelective" parameterType="com.superplus.managementsystem.bean.Supplier" >-->
+<!--    update supplier-->
+<!--    <set >-->
+<!--      <if test="suppliercode != null" >-->
+<!--        suppliercode = #{suppliercode,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="shopname != null" >-->
+<!--        shopname = #{shopname,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="lastbrandname != null" >-->
+<!--        lastbrandname = #{lastbrandname,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="brandname != null" >-->
+<!--        brandname = #{brandname,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="shopurl != null" >-->
+<!--        shopurl = #{shopurl,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="producttype != null" >-->
+<!--        producttype = #{producttype,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="comment != null" >-->
+<!--        comment = #{comment,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="updatetime != null" >-->
+<!--        updatetime = #{updatetime,jdbcType=TIMESTAMP},-->
+<!--      </if>-->
+<!--      <if test="checktype != null" >-->
+<!--        checktype = #{checktype,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="purchaseprice != null" >-->
+<!--        purchaseprice = #{purchaseprice,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="type != null" >-->
+<!--        type = #{type,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--    </set>-->
+<!--    where id = #{id,jdbcType=INTEGER}-->
+<!--  </update>-->
+<!--  <update id="updateByPrimaryKey" parameterType="com.superplus.managementsystem.bean.Supplier" >-->
+<!--    update supplier-->
+<!--    set suppliercode = #{suppliercode,jdbcType=DOUBLE},-->
+<!--      shopname = #{shopname,jdbcType=VARCHAR},-->
+<!--      lastbrandname = #{lastbrandname,jdbcType=VARCHAR},-->
+<!--      brandname = #{brandname,jdbcType=VARCHAR},-->
+<!--      shopurl = #{shopurl,jdbcType=VARCHAR},-->
+<!--      producttype = #{producttype,jdbcType=VARCHAR},-->
+<!--      comment = #{comment,jdbcType=VARCHAR},-->
+<!--      updatetime = #{updatetime,jdbcType=TIMESTAMP},-->
+<!--      checktype = #{checktype,jdbcType=VARCHAR},-->
+<!--      purchaseprice = #{purchaseprice,jdbcType=DOUBLE},-->
+<!--      type = #{type,jdbcType=VARCHAR}-->
+<!--    where id = #{id,jdbcType=INTEGER}-->
+<!--  </update>-->
+</mapper>

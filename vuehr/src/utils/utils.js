@@ -16,7 +16,6 @@ export const initMenu = (router, store)=> {
     return;
   }
   getRequest("/config/sysmenu").then(resp=> {
-    console.log(resp);
     if (resp && resp.status == 200) {
       var fmtRoutes = formatRoutes(resp.data);
       router.addRoutes(fmtRoutes);
@@ -46,6 +45,16 @@ export const formatRoutes = (routes)=> {
           require(['../components/' + component + '.vue'], resolve)
         } else if (component.startsWith("Pro")){
           require(['../components/pro/' + component + '.vue'], resolve)
+        } else if (component.startsWith("Sys")){
+          require(['../components/system/' + component + '.vue'], resolve)
+        } else if (component.startsWith("Sup")){
+          require(['../components/supplier/' + component + '.vue'], resolve)
+        } else if (component.startsWith("Tra")){
+          require(['../components/auxiliary/' + component + '.vue'], resolve)
+        } else if (component.startsWith("Cus")){
+          require(['../components/custom/' + component + '.vue'], resolve)
+        } else if (component.startsWith("Ord")){
+          require(['../components/order/'+ component + '.vue'], resolve)
         }
       },
       name: name,

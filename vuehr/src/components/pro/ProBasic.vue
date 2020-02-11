@@ -74,16 +74,28 @@
             v-loading="tableLoading"
             border
             stripe
+            height="530"
+            max-height="530"
             @selection-change="handleSelectionChange"
             size="mini"
             style="width: 100%">
             <el-table-column
               type="selection"
               align="left"
-              fixed
+              fixed="left"
               width="30">
             </el-table-column>
 
+            <el-table-column label="头像" width="120">
+            　　<template slot-scope="scope">
+            　　　　<a :href="scope.row.url" target="_blank"><img :src="scope.row.url" width="100" height="100" class="head_pic"/></a>
+            　　</template>
+            </el-table-column>
+<!--             <el-table-column prop="pictures" label="描述图片">
+　　<template scope="scope">
+　　　　<img v-for="item in scope.row.pictures" :src="item" width="40" height="40" class="head_pic"/>
+　　</template>
+</el-table-column> -->
             <el-table-column
               prop="suppliercode"
               align="left"
@@ -151,7 +163,7 @@
               align="left"
               prop="updatetime"
               label="更新时间">
-              <!-- <template slot-scope="scope">{{ scope.row.beginDate | formatDate}}</template> -->
+              <template slot-scope="scope">{{ scope.row.updatetime | formatDate}}</template>
             </el-table-column>
             <el-table-column
               prop="season"
@@ -164,12 +176,14 @@
               align="left"
               label="采购价">
             </el-table-column>
-            <el-table-column
-              prop="purchaseurl"
-              align="left"
-              width="200"
-              label="采购链接">
-            </el-table-column>
+            <a href="purchaseurl">
+              <el-table-column
+                prop="purchaseurl"
+                align="left"
+                width="200"
+                label="采购链接">
+              </el-table-column>
+            </a>
             <el-table-column
               prop="buyingprice"
               width="60"
@@ -195,7 +209,7 @@
             <el-table-column
               fixed="right"
               label="操作"
-              width="80">
+              width="60">
               <template slot-scope="scope">
                 <el-button @click="showEditProView(scope.row)" style="padding: 3px 4px 3px 4px;margin: 2px"
                            size="mini">编辑
@@ -217,7 +231,7 @@
             </el-button>
             <el-pagination
               background
-              :page-size="10"
+              :page-size="30"
               :current-page="currentPage"
               @current-change="currentChange"
               layout="prev, pager, next"
@@ -488,6 +502,9 @@
               <p>profit :{{pro.profit}}</p>
             </el-col>
           </el-row>
+          <span slot="footer" class="dialog-footer">
+            <el-button size="mini" type="primary" @click="cancelEidt">确 定</el-button>
+          </span>
         </el-dialog>
 
   </div>
@@ -512,7 +529,7 @@
           knitwearorwoven: '',
           minimumorderquantity: '',
           description: '',
-          updatetime: '',
+          updatetime: null,
           season: '',
           purchaseprice: '',
           purchaseurl: '',
@@ -525,7 +542,6 @@
         keywords: '',
         fileUploadBtnText: '导入数据',
         pictureUploadBtnText: '导入图片',
-        beginDateScope: '',
         faangledoubleup: 'fa-angle-double-up',
         faangledoubledown: 'fa-angle-double-down',
         dialogTitle: '',
@@ -561,7 +577,7 @@
           knitwearorwoven: [{required: true, message: '必填:Knitwear or woven', trigger: 'blur'}],
           minimumorderquantity: [{required: true, message: '必填:Minimum Order Quantity', trigger: 'blur'}],
           description: [{required: true, message: '必填:Description', trigger: 'blur'}],
-          updatetime: [{required: true, message: '必填:更新日期', trigger: 'change'}],
+          updatetime: [{required: true, message: '必填:更新日期', trigger: 'blur'}],
           season: [{required: true, message: '必填:Season', trigger: 'blur'}],
           purchaseprice: [{required: true, message: '必填:采购价', trigger: 'blur'}],
           size: [{required: true, message: '必填:Size', trigger: 'blur'}],
@@ -685,7 +701,7 @@
       loadPros() {
         var _this = this;
         this.tableLoading = true;
-        this.getRequest("/product/basic/pro?page=" + this.currentPage + "&size=10&keywords=" + this.keywords).then(
+        this.getRequest("/product/basic/pro?page=" + this.currentPage + "&size=30&keywords=" + this.keywords).then(
             resp => {
               this.tableLoading = false;
               if (resp && resp.status == 200) {
@@ -731,6 +747,7 @@
         });
       },
       cancelEidt() {
+        this.staticdialogVisible = false;
         this.dialogVisible = false;
         this.emptyProData();
       },
@@ -779,7 +796,7 @@
           knitwearorwoven: '',
           minimumorderquantity: '',
           description: '',
-          updatetime: '',
+          updatetime: null,
           season: '',
           purchaseprice: '',
           purchaseurl: '',

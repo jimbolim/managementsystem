@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.superplus.managementsystem.mapper.ProductMapper" >
+  <resultMap id="BaseResultMap" type="com.superplus.managementsystem.bean.Product" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="skuNumber" property="skunumber" jdbcType="VARCHAR" />
+    <result column="composition" property="composition" jdbcType="VARCHAR" />
+    <result column="colour" property="colour" jdbcType="VARCHAR" />
+    <result column="weight" property="weight" jdbcType="DOUBLE" />
+    <result column="size" property="size" jdbcType="VARCHAR" />
+    <result column="knitwearOrWoven" property="knitwearorwoven" jdbcType="VARCHAR" />
+    <result column="minimumOrderQuantity" property="minimumorderquantity" jdbcType="INTEGER" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="season" property="season" jdbcType="VARCHAR" />
+    <result column="purchasePrice" property="purchaseprice" jdbcType="DOUBLE" />
+    <result column="buyingPrice" property="buyingprice" jdbcType="DOUBLE" />
+    <result column="radicalRetropubicProstatectomy" property="radicalretropubicprostatectomy" jdbcType="DOUBLE" />
+    <result column="purchaseUrl" property="purchaseurl" jdbcType="VARCHAR" />
+    <result column="updateTime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="offer" property="offer" jdbcType="DOUBLE" />
+    <result column="profit" property="profit" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, skuNumber, composition, colour, weight, size, knitwearOrWoven, minimumOrderQuantity, 
+    description, season, purchasePrice, buyingPrice, radicalRetropubicProstatectomy, 
+    purchaseUrl, updateTime, offer, profit
+  </sql>
+  <select id="getProductByPage" resultMap="BaseResultMap">
+    select
+        p.*
+    from
+        product p
+    where skuNumber like concat('%',#{keywords},'%')
+    <if test="start!=null and size!=null">
+      order by p.id limit #{start},#{size}
+    </if>
+  </select>
+  <select id="getCountByKeywords" resultType="Long">
+    select
+        count(*)
+    from product
+    where skuNumber like concat('%',#{keywords},'%')
+  </select>
+  <select id="getAllProducts" resultMap="BaseResultMap">
+    select
+        *
+    from product
+  </select>
+
+  <select id="getMaxWorkID" resultType="Long">
+        select max(id) from product
+    </select>
+
+  <update id="updatePro"  parameterType="map" >
+    update product
+    <set >
+      <if test="pro.productid != null" >
+        productid = #{pro.productid,jdbcType=VARCHAR},
+      </if>
+      <if test="pro.suppliercode != null" >
+        suppliercode = #{pro.suppliercode,jdbcType=VARCHAR},
+      </if>
+      <if test="pro.itemname != null" >
+        itemname = #{pro.itemname,jdbcType=VARCHAR},
+      </if>
+      <if test="pro.length != null" >
+        length = #{pro.length,jdbcType=VARCHAR},
+      </if>
+      <if test="pro.skunumber != null" >
+        skuNumber = #{pro.skunumber,jdbcType=VARCHAR},
+      </if>
+      <if test="pro.composition != null" >
+        composition = #{pro.composition,jdbcType=VARCHAR},
+      </if>
+      <if test="pro.colour != null" >
+        colour = #{pro.colour,jdbcType=VARCHAR},
+      </if>
+      <if test="pro.weight != null" >
+        weight = #{pro.weight,jdbcType=DOUBLE},
+      </if>
+      <if test="pro.size != null" >
+        size = #{pro.size,jdbcType=VARCHAR},
+      </if>
+      <if test="pro.knitwearorwoven != null" >
+        knitwearOrWoven = #{pro.knitwearorwoven,jdbcType=VARCHAR},
+      </if>
+      <if test="pro.minimumorderquantity != null" >
+        minimumOrderQuantity = #{pro.minimumorderquantity,jdbcType=INTEGER},
+      </if>
+      <if test="pro.description != null" >
+        description = #{pro.description,jdbcType=VARCHAR},
+      </if>
+      <if test="pro.season != null" >
+        season = #{pro.season,jdbcType=VARCHAR},
+      </if>
+      <if test="pro.purchaseprice != null" >
+        purchasePrice = #{pro.purchaseprice,jdbcType=DOUBLE},
+      </if>
+      <if test="pro.buyingprice != null" >
+        buyingPrice = #{pro.buyingprice,jdbcType=DOUBLE},
+      </if>
+      <if test="pro.radicalretropubicprostatectomy != null" >
+        radicalRetropubicProstatectomy = #{pro.radicalretropubicprostatectomy,jdbcType=DOUBLE},
+      </if>
+      <if test="pro.purchaseurl != null" >
+        purchaseUrl = #{pro.purchaseurl,jdbcType=VARCHAR},
+      </if>
+      <if test="pro.updatetime != null" >
+        updateTime = #{pro.updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pro.offer != null" >
+        offer = #{pro.offer,jdbcType=DOUBLE},
+      </if>
+      <if test="pro.profit != null" >
+        profit = #{pro.profit,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{pro.id,jdbcType=BIGINT}
+  </update>
+
+  <select id="getIdBySkunum" resultType="Long">
+        SELECT id from product where skuNumber = #{keyword}
+  </select>
+  <delete id="deleteProById">
+    DELETE FROM product WHERE id IN
+    <foreach collection="ids" separator="," open="(" close=")" item="id">
+      #{id}
+    </foreach>
+  </delete>
+<insert id="addPro" parameterType="com.superplus.managementsystem.bean.Product">
+      insert into product (productid,suppliercode, itemname,
+      length, skuNumber, composition,
+      colour, weight, size,
+      knitwearOrWoven, minimumOrderQuantity,
+      description, season, purchasePrice,
+      buyingPrice, radicalRetropubicProstatectomy,
+      purchaseUrl, updateTime, offer,
+      profit)
+    values (#{productid,jdbcType=VARCHAR},#{suppliercode,jdbcType=VARCHAR},#{itemname,jdbcType=VARCHAR},#{length,jdbcType=VARCHAR},
+      #{skunumber,jdbcType=VARCHAR}, #{composition,jdbcType=VARCHAR},
+      #{colour,jdbcType=VARCHAR}, #{weight,jdbcType=DOUBLE}, #{size,jdbcType=VARCHAR},
+      #{knitwearorwoven,jdbcType=VARCHAR}, #{minimumorderquantity,jdbcType=INTEGER},
+      #{description,jdbcType=VARCHAR}, #{season,jdbcType=VARCHAR}, #{purchaseprice,jdbcType=DOUBLE},
+      #{buyingprice,jdbcType=DOUBLE}, #{radicalretropubicprostatectomy,jdbcType=DOUBLE},
+      #{purchaseurl,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{offer,jdbcType=DOUBLE},
+      #{profit,jdbcType=DOUBLE})
+  </insert>
+  <insert id="addPros">
+    insert into product (productid,suppliercode, itemname,
+    length, skuNumber, composition,
+    colour, weight, size,
+    knitwearOrWoven, minimumOrderQuantity,
+    description, season, purchasePrice,
+    buyingPrice, radicalRetropubicProstatectomy,
+    purchaseUrl, updateTime, offer,
+    profit)
+    values
+    <foreach collection="pros" item="pro" separator=",">
+      (#{pro.productid,jdbcType=VARCHAR},#{pro.suppliercode,jdbcType=VARCHAR},#{pro.itemname,jdbcType=VARCHAR},#{pro.length,jdbcType=VARCHAR},
+      #{pro.skunumber,jdbcType=VARCHAR}, #{pro.composition,jdbcType=VARCHAR},
+      #{pro.colour,jdbcType=VARCHAR}, #{pro.weight,jdbcType=DOUBLE}, #{pro.size,jdbcType=VARCHAR},
+      #{pro.knitwearorwoven,jdbcType=VARCHAR}, #{pro.minimumorderquantity,jdbcType=INTEGER},
+      #{pro.description,jdbcType=VARCHAR}, #{pro.season,jdbcType=VARCHAR}, #{pro.purchaseprice,jdbcType=DOUBLE},
+      #{pro.buyingprice,jdbcType=DOUBLE}, #{pro.radicalretropubicprostatectomy,jdbcType=DOUBLE},
+      #{pro.purchaseurl,jdbcType=VARCHAR}, #{pro.updatetime,jdbcType=TIMESTAMP}, #{pro.offer,jdbcType=DOUBLE},
+      #{pro.profit,jdbcType=DOUBLE})
+    </foreach>
+  </insert>
+  <insert id="insertUrl" parameterType="com.superplus.managementsystem.bean.Picture">
+      insert into picture (name,path,url,pid) values (#{name},#{lujing},#{url},#{pid})
+  </insert>
+  <select id="getPic" resultType="String">
+    select url from picture where pid = #{pid}
+  </select>
+
+  <select id="getPicUrl" resultType="String">
+    select url from picture where pid = #{id} and name like "%-A.jpg"
+  </select>
+
+  <select id="getpp" resultType="double">
+    select purchasePrice from product where skuNumber = #{sku} and size = #{size};
+  </select>
+<!--  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.superplus.managementsystem.bean.ProductExample" >-->
+<!--    select-->
+<!--    <if test="distinct" >-->
+<!--      distinct-->
+<!--    </if>-->
+<!--    <include refid="Base_Column_List" />-->
+<!--    from product-->
+<!--    <if test="_parameter != null" >-->
+<!--      <include refid="Example_Where_Clause" />-->
+<!--    </if>-->
+<!--    <if test="orderByClause != null" >-->
+<!--      order by ${orderByClause}-->
+<!--    </if>-->
+<!--  </select>-->
+<!--  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >-->
+<!--    select -->
+<!--    <include refid="Base_Column_List" />-->
+<!--    from product-->
+<!--    where id = #{id,jdbcType=INTEGER}-->
+<!--  </select>-->
+<!--  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >-->
+<!--    delete from product-->
+<!--    where id = #{id,jdbcType=INTEGER}-->
+<!--  </delete>-->
+<!--  <delete id="deleteByExample" parameterType="com.superplus.managementsystem.bean.ProductExample" >-->
+<!--    delete from product-->
+<!--    <if test="_parameter != null" >-->
+<!--      <include refid="Example_Where_Clause" />-->
+<!--    </if>-->
+<!--  </delete>-->
+<!--  <insert id="insert" parameterType="com.superplus.managementsystem.bean.Product" >-->
+<!--    insert into product (id, skuNumber, composition, -->
+<!--      colour, weight, size, -->
+<!--      knitwearOrWoven, minimumOrderQuantity, -->
+<!--      description, season, purchasePrice, -->
+<!--      buyingPrice, radicalRetropubicProstatectomy, -->
+<!--      purchaseUrl, updateTime, offer, -->
+<!--      profit)-->
+<!--    values (#{id,jdbcType=INTEGER}, #{skunumber,jdbcType=VARCHAR}, #{composition,jdbcType=VARCHAR}, -->
+<!--      #{colour,jdbcType=VARCHAR}, #{weight,jdbcType=DOUBLE}, #{size,jdbcType=VARCHAR}, -->
+<!--      #{knitwearorwoven,jdbcType=VARCHAR}, #{minimumorderquantity,jdbcType=INTEGER}, -->
+<!--      #{description,jdbcType=VARCHAR}, #{season,jdbcType=VARCHAR}, #{purchaseprice,jdbcType=DOUBLE}, -->
+<!--      #{buyingprice,jdbcType=DOUBLE}, #{radicalretropubicprostatectomy,jdbcType=DOUBLE}, -->
+<!--      #{purchaseurl,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{offer,jdbcType=DOUBLE}, -->
+<!--      #{profit,jdbcType=DOUBLE})-->
+<!--  </insert>-->
+<!--  <insert id="insertSelective" parameterType="com.superplus.managementsystem.bean.Product" >-->
+<!--    insert into product-->
+<!--    <trim prefix="(" suffix=")" suffixOverrides="," >-->
+<!--      <if test="id != null" >-->
+<!--        id,-->
+<!--      </if>-->
+<!--      <if test="skunumber != null" >-->
+<!--        skuNumber,-->
+<!--      </if>-->
+<!--      <if test="composition != null" >-->
+<!--        composition,-->
+<!--      </if>-->
+<!--      <if test="colour != null" >-->
+<!--        colour,-->
+<!--      </if>-->
+<!--      <if test="weight != null" >-->
+<!--        weight,-->
+<!--      </if>-->
+<!--      <if test="size != null" >-->
+<!--        size,-->
+<!--      </if>-->
+<!--      <if test="knitwearorwoven != null" >-->
+<!--        knitwearOrWoven,-->
+<!--      </if>-->
+<!--      <if test="minimumorderquantity != null" >-->
+<!--        minimumOrderQuantity,-->
+<!--      </if>-->
+<!--      <if test="description != null" >-->
+<!--        description,-->
+<!--      </if>-->
+<!--      <if test="season != null" >-->
+<!--        season,-->
+<!--      </if>-->
+<!--      <if test="purchaseprice != null" >-->
+<!--        purchasePrice,-->
+<!--      </if>-->
+<!--      <if test="buyingprice != null" >-->
+<!--        buyingPrice,-->
+<!--      </if>-->
+<!--      <if test="radicalretropubicprostatectomy != null" >-->
+<!--        radicalRetropubicProstatectomy,-->
+<!--      </if>-->
+<!--      <if test="purchaseurl != null" >-->
+<!--        purchaseUrl,-->
+<!--      </if>-->
+<!--      <if test="updatetime != null" >-->
+<!--        updateTime,-->
+<!--      </if>-->
+<!--      <if test="offer != null" >-->
+<!--        offer,-->
+<!--      </if>-->
+<!--      <if test="profit != null" >-->
+<!--        profit,-->
+<!--      </if>-->
+<!--    </trim>-->
+<!--    <trim prefix="values (" suffix=")" suffixOverrides="," >-->
+<!--      <if test="id != null" >-->
+<!--        #{id,jdbcType=INTEGER},-->
+<!--      </if>-->
+<!--      <if test="skunumber != null" >-->
+<!--        #{skunumber,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="composition != null" >-->
+<!--        #{composition,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="colour != null" >-->
+<!--        #{colour,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="weight != null" >-->
+<!--        #{weight,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="size != null" >-->
+<!--        #{size,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="knitwearorwoven != null" >-->
+<!--        #{knitwearorwoven,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="minimumorderquantity != null" >-->
+<!--        #{minimumorderquantity,jdbcType=INTEGER},-->
+<!--      </if>-->
+<!--      <if test="description != null" >-->
+<!--        #{description,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="season != null" >-->
+<!--        #{season,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="purchaseprice != null" >-->
+<!--        #{purchaseprice,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="buyingprice != null" >-->
+<!--        #{buyingprice,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="radicalretropubicprostatectomy != null" >-->
+<!--        #{radicalretropubicprostatectomy,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="purchaseurl != null" >-->
+<!--        #{purchaseurl,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="updatetime != null" >-->
+<!--        #{updatetime,jdbcType=TIMESTAMP},-->
+<!--      </if>-->
+<!--      <if test="offer != null" >-->
+<!--        #{offer,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="profit != null" >-->
+<!--        #{profit,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--    </trim>-->
+<!--  </insert>-->
+<!--  <select id="countByExample" parameterType="com.superplus.managementsystem.bean.ProductExample" resultType="java.lang.Integer" >-->
+<!--    select count(*) from product-->
+<!--    <if test="_parameter != null" >-->
+<!--      <include refid="Example_Where_Clause" />-->
+<!--    </if>-->
+<!--  </select>-->
+<!--  <update id="updateByExampleSelective" parameterType="map" >-->
+<!--    update product-->
+<!--    <set >-->
+<!--      <if test="pro.id != null" >-->
+<!--        id = #{pro.id,jdbcType=INTEGER},-->
+<!--      </if>-->
+<!--      <if test="pro.skunumber != null" >-->
+<!--        skuNumber = #{pro.skunumber,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="pro.composition != null" >-->
+<!--        composition = #{pro.composition,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="pro.colour != null" >-->
+<!--        colour = #{pro.colour,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="pro.weight != null" >-->
+<!--        weight = #{pro.weight,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="pro.size != null" >-->
+<!--        size = #{pro.size,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="pro.knitwearorwoven != null" >-->
+<!--        knitwearOrWoven = #{pro.knitwearorwoven,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="pro.minimumorderquantity != null" >-->
+<!--        minimumOrderQuantity = #{pro.minimumorderquantity,jdbcType=INTEGER},-->
+<!--      </if>-->
+<!--      <if test="pro.description != null" >-->
+<!--        description = #{pro.description,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="pro.season != null" >-->
+<!--        season = #{pro.season,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="pro.purchaseprice != null" >-->
+<!--        purchasePrice = #{pro.purchaseprice,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="pro.buyingprice != null" >-->
+<!--        buyingPrice = #{pro.buyingprice,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="pro.radicalretropubicprostatectomy != null" >-->
+<!--        radicalRetropubicProstatectomy = #{pro.radicalretropubicprostatectomy,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="pro.purchaseurl != null" >-->
+<!--        purchaseUrl = #{pro.purchaseurl,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="pro.updatetime != null" >-->
+<!--        updateTime = #{pro.updatetime,jdbcType=TIMESTAMP},-->
+<!--      </if>-->
+<!--      <if test="pro.offer != null" >-->
+<!--        offer = #{pro.offer,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="pro.profit != null" >-->
+<!--        profit = #{pro.profit,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--    </set>-->
+<!--    <if test="_parameter != null" >-->
+<!--      <include refid="Update_By_Example_Where_Clause" />-->
+<!--    </if>-->
+<!--  </update>-->
+<!--  <update id="updateByExample" parameterType="map" >-->
+<!--    update product-->
+<!--    set id = #{pro.id,jdbcType=INTEGER},-->
+<!--      skuNumber = #{pro.skunumber,jdbcType=VARCHAR},-->
+<!--      composition = #{pro.composition,jdbcType=VARCHAR},-->
+<!--      colour = #{pro.colour,jdbcType=VARCHAR},-->
+<!--      weight = #{pro.weight,jdbcType=DOUBLE},-->
+<!--      size = #{pro.size,jdbcType=VARCHAR},-->
+<!--      knitwearOrWoven = #{pro.knitwearorwoven,jdbcType=VARCHAR},-->
+<!--      minimumOrderQuantity = #{pro.minimumorderquantity,jdbcType=INTEGER},-->
+<!--      description = #{pro.description,jdbcType=VARCHAR},-->
+<!--      season = #{pro.season,jdbcType=VARCHAR},-->
+<!--      purchasePrice = #{pro.purchaseprice,jdbcType=DOUBLE},-->
+<!--      buyingPrice = #{pro.buyingprice,jdbcType=DOUBLE},-->
+<!--      radicalRetropubicProstatectomy = #{pro.radicalretropubicprostatectomy,jdbcType=DOUBLE},-->
+<!--      purchaseUrl = #{pro.purchaseurl,jdbcType=VARCHAR},-->
+<!--      updateTime = #{pro.updatetime,jdbcType=TIMESTAMP},-->
+<!--      offer = #{pro.offer,jdbcType=DOUBLE},-->
+<!--      profit = #{pro.profit,jdbcType=DOUBLE}-->
+<!--    <if test="_parameter != null" >-->
+<!--      <include refid="Update_By_Example_Where_Clause" />-->
+<!--    </if>-->
+<!--  </update>-->
+<!--  <update id="updateByPrimaryKeySelective" parameterType="com.superplus.managementsystem.bean.Product" >-->
+<!--    update product-->
+<!--    <set >-->
+<!--      <if test="skunumber != null" >-->
+<!--        skuNumber = #{skunumber,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="composition != null" >-->
+<!--        composition = #{composition,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="colour != null" >-->
+<!--        colour = #{colour,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="weight != null" >-->
+<!--        weight = #{weight,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="size != null" >-->
+<!--        size = #{size,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="knitwearorwoven != null" >-->
+<!--        knitwearOrWoven = #{knitwearorwoven,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="minimumorderquantity != null" >-->
+<!--        minimumOrderQuantity = #{minimumorderquantity,jdbcType=INTEGER},-->
+<!--      </if>-->
+<!--      <if test="description != null" >-->
+<!--        description = #{description,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="season != null" >-->
+<!--        season = #{season,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="purchaseprice != null" >-->
+<!--        purchasePrice = #{purchaseprice,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="buyingprice != null" >-->
+<!--        buyingPrice = #{buyingprice,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="radicalretropubicprostatectomy != null" >-->
+<!--        radicalRetropubicProstatectomy = #{radicalretropubicprostatectomy,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="purchaseurl != null" >-->
+<!--        purchaseUrl = #{purchaseurl,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="updatetime != null" >-->
+<!--        updateTime = #{updatetime,jdbcType=TIMESTAMP},-->
+<!--      </if>-->
+<!--      <if test="offer != null" >-->
+<!--        offer = #{offer,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="profit != null" >-->
+<!--        profit = #{profit,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--    </set>-->
+<!--    where id = #{id,jdbcType=INTEGER}-->
+<!--  </update>-->
+<!--  <update id="updateByPrimaryKey" parameterType="com.superplus.managementsystem.bean.Product" >-->
+<!--    update product-->
+<!--    set skuNumber = #{skunumber,jdbcType=VARCHAR},-->
+<!--      composition = #{composition,jdbcType=VARCHAR},-->
+<!--      colour = #{colour,jdbcType=VARCHAR},-->
+<!--      weight = #{weight,jdbcType=DOUBLE},-->
+<!--      size = #{size,jdbcType=VARCHAR},-->
+<!--      knitwearOrWoven = #{knitwearorwoven,jdbcType=VARCHAR},-->
+<!--      minimumOrderQuantity = #{minimumorderquantity,jdbcType=INTEGER},-->
+<!--      description = #{description,jdbcType=VARCHAR},-->
+<!--      season = #{season,jdbcType=VARCHAR},-->
+<!--      purchasePrice = #{purchaseprice,jdbcType=DOUBLE},-->
+<!--      buyingPrice = #{buyingprice,jdbcType=DOUBLE},-->
+<!--      radicalRetropubicProstatectomy = #{radicalretropubicprostatectomy,jdbcType=DOUBLE},-->
+<!--      purchaseUrl = #{purchaseurl,jdbcType=VARCHAR},-->
+<!--      updateTime = #{updatetime,jdbcType=TIMESTAMP},-->
+<!--      offer = #{offer,jdbcType=DOUBLE},-->
+<!--      profit = #{profit,jdbcType=DOUBLE}-->
+<!--    where id = #{id,jdbcType=INTEGER}-->
+<!--  </update>-->
+</mapper>

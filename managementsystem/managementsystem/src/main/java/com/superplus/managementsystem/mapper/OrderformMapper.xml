@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.superplus.managementsystem.mapper.OrderformMapper" >
+  <resultMap id="BaseResultMap" type="com.superplus.managementsystem.bean.Orderform" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="itemname" property="itemname" jdbcType="VARCHAR" />
+    <result column="sku" property="sku" jdbcType="VARCHAR" />
+    <result column="size" property="size" jdbcType="VARCHAR" />
+    <result column="poqty" property="poqty" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="VARCHAR" />
+    <result column="total" property="total" jdbcType="VARCHAR" />
+    <result column="purchaseprice" property="purchaseprice" jdbcType="DOUBLE" />
+    <result column="rpp" property="rpp" jdbcType="DOUBLE" />
+    <result column="purchaseorder" property="purchaseorder" jdbcType="VARCHAR" />
+    <result column="tlogistics" property="tlogistics" jdbcType="VARCHAR" />
+    <result column="slogistics" property="slogistics" jdbcType="VARCHAR" />
+    <result column="boxcode" property="boxcode" jdbcType="VARCHAR" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="oid" property="oid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, itemname, sku, size, poqty, price, total, purchaseprice, rpp, purchaseorder, 
+    tlogistics, slogistics, boxcode, comment
+  </sql>
+
+    <insert id="addOrderform" parameterType="com.superplus.managementsystem.bean.Orderform" >
+      insert into orderform (id, itemname, sku,
+        size, poqty, price,
+        total, purchaseprice, rpp,
+        purchaseorder, tlogistics, slogistics,
+        boxcode, comment, oid)
+      values
+      <foreach collection="orders" item="order" separator=",">
+      (#{order.id,jdbcType=INTEGER}, #{order.itemname,jdbcType=VARCHAR}, #{order.sku,jdbcType=VARCHAR},
+        #{order.size,jdbcType=VARCHAR}, #{order.poqty,jdbcType=INTEGER}, #{order.price,jdbcType=VARCHAR},
+        #{order.total,jdbcType=VARCHAR}, #{order.purchaseprice,jdbcType=DOUBLE}, #{order.rpp,jdbcType=DOUBLE},
+        #{order.purchaseorder,jdbcType=VARCHAR}, #{order.tlogistics,jdbcType=VARCHAR}, #{order.slogistics,jdbcType=VARCHAR},
+        #{order.boxcode,jdbcType=VARCHAR}, #{order.comment,jdbcType=VARCHAR}, #{order.oid,jdbcType=INTEGER})
+      </foreach>
+    </insert>
+
+
+<!--  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.superplus.managementsystem.bean.OrderformExample" >-->
+<!--    select-->
+<!--    <if test="distinct" >-->
+<!--      distinct-->
+<!--    </if>-->
+<!--    <include refid="Base_Column_List" />-->
+<!--    from orderform-->
+<!--    <if test="_parameter != null" >-->
+<!--      <include refid="Example_Where_Clause" />-->
+<!--    </if>-->
+<!--    <if test="orderByClause != null" >-->
+<!--      order by ${orderByClause}-->
+<!--    </if>-->
+<!--  </select>-->
+<!--  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >-->
+<!--    select -->
+<!--    <include refid="Base_Column_List" />-->
+<!--    from orderform-->
+<!--    where id = #{id,jdbcType=INTEGER}-->
+<!--  </select>-->
+<!--  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >-->
+<!--    delete from orderform-->
+<!--    where id = #{id,jdbcType=INTEGER}-->
+<!--  </delete>-->
+<!--  <delete id="deleteByExample" parameterType="com.superplus.managementsystem.bean.OrderformExample" >-->
+<!--    delete from orderform-->
+<!--    <if test="_parameter != null" >-->
+<!--      <include refid="Example_Where_Clause" />-->
+<!--    </if>-->
+<!--  </delete>-->
+<!--  <insert id="insert" parameterType="com.superplus.managementsystem.bean.Orderform" >-->
+<!--    insert into orderform (id, itemname, sku, -->
+<!--      size, poqty, price, -->
+<!--      total, purchaseprice, rpp, -->
+<!--      purchaseorder, tlogistics, slogistics, -->
+<!--      boxcode, comment)-->
+<!--    values (#{id,jdbcType=INTEGER}, #{itemname,jdbcType=VARCHAR}, #{sku,jdbcType=VARCHAR}, -->
+<!--      #{size,jdbcType=VARCHAR}, #{poqty,jdbcType=INTEGER}, #{price,jdbcType=VARCHAR}, -->
+<!--      #{total,jdbcType=VARCHAR}, #{purchaseprice,jdbcType=DOUBLE}, #{rpp,jdbcType=DOUBLE}, -->
+<!--      #{purchaseorder,jdbcType=VARCHAR}, #{tlogistics,jdbcType=VARCHAR}, #{slogistics,jdbcType=VARCHAR}, -->
+<!--      #{boxcode,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR})-->
+<!--  </insert>-->
+<!--  <insert id="insertSelective" parameterType="com.superplus.managementsystem.bean.Orderform" >-->
+<!--    insert into orderform-->
+<!--    <trim prefix="(" suffix=")" suffixOverrides="," >-->
+<!--      <if test="id != null" >-->
+<!--        id,-->
+<!--      </if>-->
+<!--      <if test="itemname != null" >-->
+<!--        itemname,-->
+<!--      </if>-->
+<!--      <if test="sku != null" >-->
+<!--        sku,-->
+<!--      </if>-->
+<!--      <if test="size != null" >-->
+<!--        size,-->
+<!--      </if>-->
+<!--      <if test="poqty != null" >-->
+<!--        poqty,-->
+<!--      </if>-->
+<!--      <if test="price != null" >-->
+<!--        price,-->
+<!--      </if>-->
+<!--      <if test="total != null" >-->
+<!--        total,-->
+<!--      </if>-->
+<!--      <if test="purchaseprice != null" >-->
+<!--        purchaseprice,-->
+<!--      </if>-->
+<!--      <if test="rpp != null" >-->
+<!--        rpp,-->
+<!--      </if>-->
+<!--      <if test="purchaseorder != null" >-->
+<!--        purchaseorder,-->
+<!--      </if>-->
+<!--      <if test="tlogistics != null" >-->
+<!--        tlogistics,-->
+<!--      </if>-->
+<!--      <if test="slogistics != null" >-->
+<!--        slogistics,-->
+<!--      </if>-->
+<!--      <if test="boxcode != null" >-->
+<!--        boxcode,-->
+<!--      </if>-->
+<!--      <if test="comment != null" >-->
+<!--        comment,-->
+<!--      </if>-->
+<!--    </trim>-->
+<!--    <trim prefix="values (" suffix=")" suffixOverrides="," >-->
+<!--      <if test="id != null" >-->
+<!--        #{id,jdbcType=INTEGER},-->
+<!--      </if>-->
+<!--      <if test="itemname != null" >-->
+<!--        #{itemname,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="sku != null" >-->
+<!--        #{sku,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="size != null" >-->
+<!--        #{size,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="poqty != null" >-->
+<!--        #{poqty,jdbcType=INTEGER},-->
+<!--      </if>-->
+<!--      <if test="price != null" >-->
+<!--        #{price,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="total != null" >-->
+<!--        #{total,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="purchaseprice != null" >-->
+<!--        #{purchaseprice,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="rpp != null" >-->
+<!--        #{rpp,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="purchaseorder != null" >-->
+<!--        #{purchaseorder,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="tlogistics != null" >-->
+<!--        #{tlogistics,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="slogistics != null" >-->
+<!--        #{slogistics,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="boxcode != null" >-->
+<!--        #{boxcode,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="comment != null" >-->
+<!--        #{comment,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--    </trim>-->
+<!--  </insert>-->
+<!--  <select id="countByExample" parameterType="com.superplus.managementsystem.bean.OrderformExample" resultType="java.lang.Integer" >-->
+<!--    select count(*) from orderform-->
+<!--    <if test="_parameter != null" >-->
+<!--      <include refid="Example_Where_Clause" />-->
+<!--    </if>-->
+<!--  </select>-->
+<!--  <update id="updateByExampleSelective" parameterType="map" >-->
+<!--    update orderform-->
+<!--    <set >-->
+<!--      <if test="record.id != null" >-->
+<!--        id = #{record.id,jdbcType=INTEGER},-->
+<!--      </if>-->
+<!--      <if test="record.itemname != null" >-->
+<!--        itemname = #{record.itemname,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="record.sku != null" >-->
+<!--        sku = #{record.sku,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="record.size != null" >-->
+<!--        size = #{record.size,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="record.poqty != null" >-->
+<!--        poqty = #{record.poqty,jdbcType=INTEGER},-->
+<!--      </if>-->
+<!--      <if test="record.price != null" >-->
+<!--        price = #{record.price,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="record.total != null" >-->
+<!--        total = #{record.total,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="record.purchaseprice != null" >-->
+<!--        purchaseprice = #{record.purchaseprice,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="record.rpp != null" >-->
+<!--        rpp = #{record.rpp,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="record.purchaseorder != null" >-->
+<!--        purchaseorder = #{record.purchaseorder,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="record.tlogistics != null" >-->
+<!--        tlogistics = #{record.tlogistics,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="record.slogistics != null" >-->
+<!--        slogistics = #{record.slogistics,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="record.boxcode != null" >-->
+<!--        boxcode = #{record.boxcode,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="record.comment != null" >-->
+<!--        comment = #{record.comment,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--    </set>-->
+<!--    <if test="_parameter != null" >-->
+<!--      <include refid="Update_By_Example_Where_Clause" />-->
+<!--    </if>-->
+<!--  </update>-->
+<!--  <update id="updateByExample" parameterType="map" >-->
+<!--    update orderform-->
+<!--    set id = #{record.id,jdbcType=INTEGER},-->
+<!--      itemname = #{record.itemname,jdbcType=VARCHAR},-->
+<!--      sku = #{record.sku,jdbcType=VARCHAR},-->
+<!--      size = #{record.size,jdbcType=VARCHAR},-->
+<!--      poqty = #{record.poqty,jdbcType=INTEGER},-->
+<!--      price = #{record.price,jdbcType=VARCHAR},-->
+<!--      total = #{record.total,jdbcType=VARCHAR},-->
+<!--      purchaseprice = #{record.purchaseprice,jdbcType=DOUBLE},-->
+<!--      rpp = #{record.rpp,jdbcType=DOUBLE},-->
+<!--      purchaseorder = #{record.purchaseorder,jdbcType=VARCHAR},-->
+<!--      tlogistics = #{record.tlogistics,jdbcType=VARCHAR},-->
+<!--      slogistics = #{record.slogistics,jdbcType=VARCHAR},-->
+<!--      boxcode = #{record.boxcode,jdbcType=VARCHAR},-->
+<!--      comment = #{record.comment,jdbcType=VARCHAR}-->
+<!--    <if test="_parameter != null" >-->
+<!--      <include refid="Update_By_Example_Where_Clause" />-->
+<!--    </if>-->
+<!--  </update>-->
+<!--  <update id="updateByPrimaryKeySelective" parameterType="com.superplus.managementsystem.bean.Orderform" >-->
+<!--    update orderform-->
+<!--    <set >-->
+<!--      <if test="itemname != null" >-->
+<!--        itemname = #{itemname,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="sku != null" >-->
+<!--        sku = #{sku,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="size != null" >-->
+<!--        size = #{size,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="poqty != null" >-->
+<!--        poqty = #{poqty,jdbcType=INTEGER},-->
+<!--      </if>-->
+<!--      <if test="price != null" >-->
+<!--        price = #{price,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="total != null" >-->
+<!--        total = #{total,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="purchaseprice != null" >-->
+<!--        purchaseprice = #{purchaseprice,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="rpp != null" >-->
+<!--        rpp = #{rpp,jdbcType=DOUBLE},-->
+<!--      </if>-->
+<!--      <if test="purchaseorder != null" >-->
+<!--        purchaseorder = #{purchaseorder,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="tlogistics != null" >-->
+<!--        tlogistics = #{tlogistics,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="slogistics != null" >-->
+<!--        slogistics = #{slogistics,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="boxcode != null" >-->
+<!--        boxcode = #{boxcode,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="comment != null" >-->
+<!--        comment = #{comment,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--    </set>-->
+<!--    where id = #{id,jdbcType=INTEGER}-->
+<!--  </update>-->
+<!--  <update id="updateByPrimaryKey" parameterType="com.superplus.managementsystem.bean.Orderform" >-->
+<!--    update orderform-->
+<!--    set itemname = #{itemname,jdbcType=VARCHAR},-->
+<!--      sku = #{sku,jdbcType=VARCHAR},-->
+<!--      size = #{size,jdbcType=VARCHAR},-->
+<!--      poqty = #{poqty,jdbcType=INTEGER},-->
+<!--      price = #{price,jdbcType=VARCHAR},-->
+<!--      total = #{total,jdbcType=VARCHAR},-->
+<!--      purchaseprice = #{purchaseprice,jdbcType=DOUBLE},-->
+<!--      rpp = #{rpp,jdbcType=DOUBLE},-->
+<!--      purchaseorder = #{purchaseorder,jdbcType=VARCHAR},-->
+<!--      tlogistics = #{tlogistics,jdbcType=VARCHAR},-->
+<!--      slogistics = #{slogistics,jdbcType=VARCHAR},-->
+<!--      boxcode = #{boxcode,jdbcType=VARCHAR},-->
+<!--      comment = #{comment,jdbcType=VARCHAR}-->
+<!--    where id = #{id,jdbcType=INTEGER}-->
+<!--  </update>-->
+</mapper>
